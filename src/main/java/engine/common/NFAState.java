@@ -35,7 +35,7 @@ public class NFAState extends State {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        String desc = String.format("ID %d, Acceptable: %s: \n", this.getStateID(), this
+        String desc = String.format("NFA StateID %d, Acceptable: %s \n", this.getStateID(), this
                 .isAcceptable());
         sb.append(desc);
 
@@ -44,7 +44,16 @@ public class NFAState extends State {
             for(NFAState s : entry.getValue()){
                 gotoStates.add(s.getStateID());
             }
-            sb.append("when \"" + entry.getKey() + "\" goto state " + gotoStates + "\n");
+
+            // 针对NFA的特殊输入 ε 作处理
+            String key = null;
+            if(Const.EPSILON_VALUE == entry.getKey()){
+                key = "ε";
+            } else {
+                key = String.valueOf(entry.getKey());
+            }
+
+            sb.append("when \"" + key + "\" goto state " + gotoStates + "\n");
         }
 
         return sb.toString();

@@ -34,7 +34,7 @@ public class DFAState extends State {
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        String desc = String.format("ID %d, Acceptable: %s: \n", this.getStateID(), this
+        String desc = String.format("DFA State ID %d, Acceptable: %s \n", this.getStateID(), this
                 .isAcceptable());
         sb.append(desc);
 

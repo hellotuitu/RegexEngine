@@ -12,7 +12,7 @@
         <id>1</id>
         <accept>false</accept>
         <transition>
-            <key>0</key>
+            <key>ε</key>
             <id>2</id>
         </transition>
     </state>
@@ -20,11 +20,11 @@
         <id>2</id>
         <accept>false</accept>
         <transition>
-            <key>0</key>
+            <key>ε</key>
             <id>3</id>
         </transition>
         <transition>
-            <key>0</key>
+            <key>ε</key>
             <id>9</id>
         </transition>
     </state>
@@ -32,11 +32,11 @@
         <id>3</id>
         <accept>false</accept>
         <transition>
-            <key>0</key>
+            <key>ε</key>
             <id>4</id>
         </transition>
         <transition>
-            <key>0</key>
+            <key>ε</key>
             <id>6</id>
         </transition>
     </state>
@@ -52,7 +52,7 @@
         <id>5</id>
         <accept>false</accept>
         <transition>
-            <key>0</key>
+            <key>ε</key>
             <id>8</id>
         </transition>
     </state>
@@ -68,7 +68,7 @@
         <id>7</id>
         <accept>false</accept>
         <transition>
-            <key>0</key>
+            <key>ε</key>
             <id>8</id>
         </transition>
     </state>
@@ -76,7 +76,7 @@
         <id>8</id>
         <accept>false</accept>
         <transition>
-            <key>0</key>
+            <key>ε</key>
             <id>9</id>
         </transition>
     </state>

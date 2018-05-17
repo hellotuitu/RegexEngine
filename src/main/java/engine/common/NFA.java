@@ -49,7 +49,13 @@ public class NFA {
 
             for(Object obj : stateEle.elements("transition")){
                 Element transition = (Element)obj;
-                char key = transition.element("key").getTextTrim().charAt(0);
+                String keyDesc = transition.element("key").getTextTrim();
+
+                char key = 0;
+                if(!Const.EPSILON.equals(keyDesc)){
+                    key = keyDesc.charAt(0);
+                }
+
                 int targetID = Integer.valueOf(transition.element("id").getTextTrim());
                 nfa.states.get(id).addNextState(key, nfa.states.get(targetID));
             }
@@ -67,6 +73,15 @@ public class NFA {
         states.add(ns);
 
         return ns;
+    }
+
+
+    /**
+     * 使用子集构造算法 将NFA转换为DFA
+     * @return 由当前的NFA转换成的DFA
+     */
+    public DFA toDFA(){
+        return null;
     }
 
     @Override
