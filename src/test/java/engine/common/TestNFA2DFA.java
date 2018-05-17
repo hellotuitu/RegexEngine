@@ -6,6 +6,8 @@ import org.dom4j.DocumentException;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @program: regex-engine
@@ -21,7 +23,7 @@ public class TestNFA2DFA {
         NFA nfa = NFA.constructNFAFromXML(fileName);
 
         ArrayList<NFAState> states = nfa.getStates();
-        ArrayList<Integer> closure = new ArrayList<>();
+        Set<Integer> closure = new HashSet<>();
 
         NFA2DFA.getEpsClosure(states.get(1), closure);
 
@@ -32,4 +34,15 @@ public class TestNFA2DFA {
         }
         assertEquals(closure, expectClosure);
     }
+
+    @Test
+    void testNFA2DFA() throws Exception {
+        String fileName = ".\\src\\main\\resources\\sample_dfa.xml";
+        NFA nfa = NFA.constructNFAFromXML(fileName);
+
+        DFA dfa = NFA2DFA.toDFA(nfa);
+        System.out.println(dfa);
+    }
+
+
 }
