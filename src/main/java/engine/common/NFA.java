@@ -75,13 +75,8 @@ public class NFA {
         return ns;
     }
 
-
-    /**
-     * 使用子集构造算法 将NFA转换为DFA
-     * @return 由当前的NFA转换成的DFA
-     */
-    public DFA toDFA(){
-        return null;
+    public ArrayList<NFAState> getStates(){
+        return states;
     }
 
     @Override
