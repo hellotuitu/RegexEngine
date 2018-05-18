@@ -8,11 +8,19 @@ package engine.common;
  * @create: 2018-05-18 17:01
  **/
 public class RE2NFA {
+    /**
+     * @param re 正规文法，注意：不是正则表达式
+     * @return 生成的NFA
+     */
     public static NFA toNFA(String re){
         NFA nfa = new NFA();
-        NFAState startState = nfa.newState();
-        nfa.setStartState(startState);
-        return null;
+        try{
+            parse(nfa, re, 0, re.length());
+        } catch (Exception why){
+            System.out.println(why.getMessage());
+            nfa = null;
+        }
+        return nfa;
     }
 
     /**
