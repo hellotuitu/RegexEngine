@@ -100,7 +100,7 @@ public class TestDFAMinimizer {
     }
 
     @Test
-    void testSplit1() throws Exception {
+    void testSplitAll() throws Exception {
         // can minimize case
 
         // construct a dfa
@@ -110,5 +110,19 @@ public class TestDFAMinimizer {
 
         // expect to split to [[state0], [state1], [state2, state4], [state3, state5]]
         assertEquals(4, allSet.size());
+    }
+
+    @Test
+    void testHopcroft() throws Exception {
+        DFA dfa = constructDFA("a(b|c)*");
+
+        DFA miniDFA = DFAMinimizer.hopcroft(dfa);
+        assertEquals(2, miniDFA.getStates().size());
+        System.out.println(miniDFA);
+
+        dfa = constructDFA("f(ee|ie)");
+        miniDFA = DFAMinimizer.hopcroft(dfa);
+        assertEquals(4, miniDFA.getStates().size());
+        System.out.println(miniDFA);
     }
 }

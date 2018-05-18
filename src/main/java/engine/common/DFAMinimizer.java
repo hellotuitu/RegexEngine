@@ -1,8 +1,6 @@
 package engine.common;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @program: regex-engine
@@ -12,10 +10,8 @@ import java.util.Set;
  **/
 public class DFAMinimizer {
     /**
-     * 注意，最小化是在原DFA之上进行的
-     *
      * @param dfa 需进行最小化的DFA
-     * @return 最小化的DFA
+     * @return 返回一个新的最小化的DFA
      */
     public static DFA minimize(DFA dfa){
         return null;
@@ -28,10 +24,68 @@ public class DFAMinimizer {
      *   判断是否可分的依据是 对于这个集合每一个可接受的字符，如果接受这个字符时转向了不同的状态，则可分
      * @param dfa
      */
-    public static void hopcroft(DFA dfa){
+    public static DFA hopcroft(DFA dfa) throws Exception {
         Set<Set<DFAState>> allSet = splitAll(dfa);
 
         // 利用划分好的集合重新构建一个最小化的dfa
+        DFA miniDFA = new DFA();
+        Map<Set<DFAState>, DFAState> table = new HashMap<>();
+
+        // 为每一个集合生成一个DFAState
+        for(Set<DFAState> set : allSet){
+            table.put(set, miniDFA.newState());
+        }
+
+        // 生成转移关系
+        // 每一个集合应该只转移到另一个集合或自身
+        for(Set<DFAState> set : allSet){
+            // 获取集合所能接受的全部字符
+            TreeSet<Character> charSet = new TreeSet<>();
+            // 判断当前集合是否时可接受的集合
+            boolean acceptable = false;
+            for(DFAState state : set){
+                for(char c : state.getNextStates().keySet()){
+                    charSet.add(c);
+                }
+                if(state.isAcceptable()){
+                    acceptable = true;
+                }
+            }
+
+            // 从当前集合中选一个状态判断当前集合转移到哪个集合
+            DFAState toState = null;
+            // 如果可接受字符为空 则转移到自身
+            DFAState state = (DFAState) set.toArray()[0];
+            if(!charSet.isEmpty()){
+                char randomC = (char) charSet.toArray()[0];
+                if(state.getNextStates().containsKey(randomC)){
+                    for(Set<DFAState> t : allSet){
+                        if(t.contains(state.getNextState(randomC))){
+                            toState = table.get(t);
+                        }
+                    }
+                } else {
+                    // 转移到自身
+                    toState = table.get(set);
+                }
+            } else {
+                toState = table.get(set);
+            }
+
+
+            // 为所有字符生成转移关系
+            DFAState cur = table.get(set);
+            for(char c : charSet){
+                cur.addNextState(c, toState);
+            }
+
+            // 设置是否可接受
+            if(acceptable){
+                cur.setAcceptable();
+            }
+        }
+
+        return miniDFA;
     }
 
     /**
