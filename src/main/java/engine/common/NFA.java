@@ -18,6 +18,7 @@ import java.util.Iterator;
 public class NFA {
     private int stateCounter = 0;
     private ArrayList<NFAState> states;
+    private NFAState startState;
 
     public NFA(){
         states = new ArrayList<>();
@@ -79,6 +80,21 @@ public class NFA {
         return states;
     }
 
+    public void setStartState(NFAState state){
+        this.startState = state;
+    }
+
+    public NFAState getStartState(){
+        return  this.startState;
+    }
+
+    public void detectAcceptableStates(){
+        for(NFAState state : states){
+            if(state.getNextStates().size() == 0){
+                state.setAcceptable();
+            }
+        }
+    }
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
