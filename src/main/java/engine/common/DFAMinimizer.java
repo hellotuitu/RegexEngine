@@ -13,8 +13,8 @@ public class DFAMinimizer {
      * @param dfa 需进行最小化的DFA
      * @return 返回一个新的最小化的DFA
      */
-    public static DFA minimize(DFA dfa){
-        return null;
+    public static DFA minimize(DFA dfa) throws Exception {
+        return hopcroft(dfa);
     }
 
     /**
