@@ -29,9 +29,15 @@ public class DFAMinimizer {
      * @param dfa
      */
     public static void hopcroft(DFA dfa){
+        Set<Set<DFAState>> allSet = splitAll(dfa);
 
+        // 利用划分好的集合重新构建一个最小化的dfa
     }
 
+    /**
+     * @param dfa
+     * @return DFA划分至不可分状态后的所有状态集合的集合
+     */
     public static Set<Set<DFAState>> splitAll(DFA dfa){
         // 1: 划分为两个集合 可接受集合 不可接受集合
         Set<Set<DFAState>> allSet = new HashSet<>();
@@ -65,6 +71,11 @@ public class DFAMinimizer {
         return allSet;
     }
 
+    /**
+     * 划分一个集合，并将划分的结果加入到allSet中，然后删除原集合
+     * @param set
+     * @param allSet
+     */
     public static void split(Set<DFAState> set, Set<Set<DFAState>> allSet) {
         // 0： 如果当前set只有一个状态，直接返回
         if(set.size() == 1){
