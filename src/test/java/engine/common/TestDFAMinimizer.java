@@ -15,7 +15,7 @@ import java.util.Set;
  **/
 public class TestDFAMinimizer {
 
-    private DFA constructDFA(String reg){
+     DFA constructDFA(String reg){
         DFA dfa = new DFA();
 
         try{
