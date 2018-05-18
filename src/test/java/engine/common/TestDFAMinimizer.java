@@ -123,6 +123,8 @@ public class TestDFAMinimizer {
         dfa = constructDFA("f(ee|ie)");
         miniDFA = DFAMinimizer.hopcroft(dfa);
         assertEquals(4, miniDFA.getStates().size());
+        miniDFA.setStartStateByExistStates();
         System.out.println(miniDFA);
+        System.out.println(miniDFA.getStartState());
     }
 }
