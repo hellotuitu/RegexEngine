@@ -26,17 +26,15 @@ public class NFA2DFA {
 
         LinkedList<DFAState> workList = new LinkedList<>();
         LinkedList<Set<Integer>> epsList = new LinkedList<>();
+        LinkedList<Set<Integer>> epsStoreList = new LinkedList<>();
 
         workList.add(q0);
         epsList.add(q0Eps);
+        epsStoreList.add(q0Eps);
 
         while(!workList.isEmpty()){
             DFAState cur = workList.remove();
             Set<Integer> eps = epsList.remove();
-
-            System.out.println("cur = " + cur);
-            System.out.println("eps = " + eps);
-            System.in.read();
 
             // 获取当前cur可以接受的字符
             ArrayList<Character> acceptChar = new ArrayList<>();
@@ -63,10 +61,13 @@ public class NFA2DFA {
                 // 如果 tempClosure 不为空 且 未在epsList中出现过
                 // 则生成新的DFA节点
                 if(!tempClosure.isEmpty()){
+
                     boolean found = false;
-                    for(int i = 0; i < epsList.size(); i++){
-                        if(epsList.get(i).equals(tempClosure)){
+                    int foundIndex = -1;
+                    for(int i = 0; i < epsStoreList.size(); i++){
+                        if(epsStoreList.get(i).equals(tempClosure)){
                             found = true;
+                            foundIndex = i;
                             break;
                         }
                     }
@@ -74,12 +75,21 @@ public class NFA2DFA {
                     if(!found){
                         DFAState temp = dfa.newState();
                         cur.addNextState(c, temp);
+
+                        // 判断新增的节点是否是 可接受状态
+                        for(int stateIndex : tempClosure){
+                            if(nfa.getStates().get(stateIndex).isAcceptable()){
+                                temp.setAcceptable();
+                                break;
+                            }
+                        }
+
                         workList.add(temp);
                         epsList.add(tempClosure);
-                        System.out.println("found new state");
-                        System.out.println("c = " + c);
-                        System.out.println("temp = " + temp);
-                        System.out.println("tempClosure = " + tempClosure);
+                        epsStoreList.add(tempClosure);
+                    } else {
+                        // 如果当前状态已出现过了
+                        cur.addNextState(c, dfa.getStates().get(foundIndex));
                     }
 
                 }

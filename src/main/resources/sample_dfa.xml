@@ -79,13 +79,13 @@
             <key>ε</key>
             <id>9</id>
         </transition>
+        <transition>
+            <key>ε</key>
+            <id>3</id>
+        </transition>
     </state>
     <state>
         <id>9</id>
         <accept>true</accept>
-        <transition>
-            <key>c</key>
-            <id>1</id>
-        </transition>
     </state>
 </nfa>

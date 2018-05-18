@@ -41,7 +41,28 @@ public class TestNFA2DFA {
         NFA nfa = NFA.constructNFAFromXML(fileName);
 
         DFA dfa = NFA2DFA.toDFA(nfa);
-        System.out.println(dfa);
+
+        DFA expectDFA = new DFA();
+        DFAState state0 = expectDFA.newState();
+        DFAState state1 = expectDFA.newState();
+        DFAState state2 = expectDFA.newState();
+        DFAState state3 = expectDFA.newState();
+
+        state0.addNextState('a', state1);
+
+        state1.addNextState('b', state2);
+        state1.addNextState('c', state3);
+        state1.setAcceptable();
+
+        state2.addNextState('b', state2);
+        state2.addNextState('c', state3);
+        state2.setAcceptable();
+
+        state3.addNextState('b', state2);
+        state3.addNextState('c', state3);
+        state3.setAcceptable();
+
+        assertEquals(dfa.toString(), expectDFA.toString());
     }
 
 

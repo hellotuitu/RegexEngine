@@ -30,6 +30,11 @@ public class DFA {
 
         return state;
     }
+
+    public ArrayList<DFAState> getStates(){
+        return states;
+    }
+
     public int getStateCounterAndIncrement(){
         return stateCounter++;
     }
