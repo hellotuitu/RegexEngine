@@ -1,11 +1,11 @@
-package engine.common;
+package engine.core;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static  org.junit.jupiter.api.Assertions.*;
-import static  engine.common.RE2NFA.*;
+import static  engine.core.RE2NFA.*;
 /**
  * @program: regex-engine
  * @description:
@@ -23,11 +23,11 @@ public class TestRE2NFA {
     }
 
     @Test
-    void testWrapSelct() throws Exception {
+    void testWrapSelect() throws Exception {
         NFA nfa = new NFA();
         RE2NFA.wrapSelect(nfa, RE2NFA.parse(nfa, "a", 0, 1),
                                     RE2NFA.parse(nfa, "b", 0, 1));
-        assertEquals(5, nfa.getStates().size());
+        assertEquals(6, nfa.getStates().size());
     }
 
     @Test

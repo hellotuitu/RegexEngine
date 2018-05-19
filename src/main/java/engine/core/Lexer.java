@@ -1,4 +1,4 @@
-package engine.common;
+package engine.core;
 
 import java.util.Arrays;
 import java.util.Map;

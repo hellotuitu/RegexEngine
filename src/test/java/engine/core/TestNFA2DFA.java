@@ -1,4 +1,4 @@
-package engine.common;
+package engine.core;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +27,7 @@ public class TestNFA2DFA {
         NFA2DFA.getEpsClosure(states.get(1), closure);
 
         int[] expect = new int[]{1, 2, 3, 4, 6, 9};
-        ArrayList<Integer> expectClosure = new ArrayList<>();
+        Set<Integer> expectClosure = new HashSet<>();
         for(int i = 0; i < expect.length; i++){
             expectClosure.add(expect[i]);
         }

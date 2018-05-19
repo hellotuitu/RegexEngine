@@ -1,4 +1,4 @@
-package engine.common;
+package engine.core;
 
 import org.dom4j.DocumentException;
 import org.junit.jupiter.api.Test;
