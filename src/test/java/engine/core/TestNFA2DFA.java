@@ -38,6 +38,7 @@ public class TestNFA2DFA {
     void testNFA2DFA() throws Exception {
         String fileName = ".\\src\\main\\resources\\sample_dfa.xml";
         NFA nfa = NFA.constructNFAFromXML(fileName);
+        nfa.setStartState(nfa.getStates().get(0));
 
         DFA dfa = NFA2DFA.toDFA(nfa);
 
@@ -46,6 +47,7 @@ public class TestNFA2DFA {
         DFAState state1 = expectDFA.newState();
         DFAState state2 = expectDFA.newState();
         DFAState state3 = expectDFA.newState();
+        expectDFA.setStartState(state0);
 
         state0.addNextState('a', state1);
 
@@ -63,6 +65,4 @@ public class TestNFA2DFA {
 
         assertEquals(dfa.toString(), expectDFA.toString());
     }
-
-
 }

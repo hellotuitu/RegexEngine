@@ -20,7 +20,8 @@ public class NFA2DFA {
 
         DFAState q0 = dfa.newState();
         Set<Integer> q0Eps = new HashSet<>();
-        getEpsClosure(nfaStates.get(0), q0Eps);
+        getEpsClosure(nfa.getStartState(), q0Eps);
+        dfa.setStartState(q0);
 
         LinkedList<DFAState> workList = new LinkedList<>();
         LinkedList<Set<Integer>> epsList = new LinkedList<>();

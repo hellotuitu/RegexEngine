@@ -39,6 +39,10 @@ public class DFA {
      * 根据当前已存在的状态设置开始状态
      */
     public void setStartStateByExistStates(){
+        if(this.startState != null){
+            return ;
+        }
+        // NOTE: 这是不安全的做法
         // 搜索当前所有的节点 找到第一个未被其他状态指向过的状态 设置为起始状态
         Set<DFAState> set = new HashSet<>(states);
 
@@ -61,8 +65,13 @@ public class DFA {
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        sb.append("DFA with " + this.stateCounter + " states.");
 
-        sb.append("DFA with " + this.stateCounter + " states.\n\n");
+        if(this.startState != null){
+            sb.append("Start State ID: " + startState.getStateID());
+        }
+
+        sb.append("\n\n");
         for(DFAState state : states){
             sb.append(state.toString());
             sb.append("\n");

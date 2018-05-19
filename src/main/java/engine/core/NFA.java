@@ -88,18 +88,25 @@ public class NFA {
         return  this.startState;
     }
 
+    @Deprecated
     public void detectAcceptableStates(){
-        for(NFAState state : states){
-            if(state.getNextStates().size() == 0){
-                state.setAcceptable();
-            }
-        }
+//        for(NFAState state : states){
+//            if(state.getNextStates().size() == 0){
+//                state.setAcceptable();
+//            }
+//        }
     }
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
 
-        sb.append("NFA with " + this.stateCounter + " states.\n\n");
+        sb.append("NFA with " + this.stateCounter + " states.");
+
+        if(this.startState != null){
+            sb.append("Start State ID: " + startState.getStateID());
+        }
+
+        sb.append("\n\n");
         for(NFAState state : states){
             sb.append(state.toString());
             sb.append("\n");

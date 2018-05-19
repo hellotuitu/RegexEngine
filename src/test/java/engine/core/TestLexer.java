@@ -17,7 +17,7 @@ public class TestLexer {
         dfa = DFAMinimizer.minimize(dfa);
 
         Lexer lexer = new Lexer();
-        lexer.setDDFA(dfa);
+        lexer.setDFA(dfa);
         lexer.compile();
 
         assertEquals(-1, lexer.match("a"));
@@ -38,7 +38,7 @@ public class TestLexer {
         dfa = DFAMinimizer.minimize(dfa);
 
         Lexer lexer = new Lexer();
-        lexer.setDDFA(dfa);
+        lexer.setDFA(dfa);
         lexer.compile();
 
         assertEquals(-1, lexer.match("fee"));

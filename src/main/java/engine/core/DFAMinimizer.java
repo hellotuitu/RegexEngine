@@ -33,11 +33,15 @@ public class DFAMinimizer {
 
         // 为每一个集合生成一个DFAState
         for(Set<DFAState> set : allSet){
-            table.put(set, miniDFA.newState());
+            DFAState newState = miniDFA.newState();
+            table.put(set, newState);
+            // 同时设置新的最小化的DFA的起始状态
+            if(set.contains(dfa.getStartState())){
+                miniDFA.setStartState(newState);
+            }
         }
 
-        // 生成转移关系
-        // 每一个集合应该只转移到另一个集合或自身
+        // 重新生成转移关系
         for(Set<DFAState> set : allSet){
             // 获取集合所能接受的全部字符
             TreeSet<Character> charSet = new TreeSet<>();
@@ -52,31 +56,23 @@ public class DFAMinimizer {
                 }
             }
 
-            // 从当前集合中选一个状态判断当前集合转移到哪个集合
-            DFAState toState = null;
-            // 如果可接受字符为空 则转移到自身
-            DFAState state = (DFAState) set.toArray()[0];
-            if(!charSet.isEmpty()){
-                char randomC = (char) charSet.toArray()[0];
-                if(state.getNextStates().containsKey(randomC)){
+            // 循环每个状态 判断当前集合转移到哪些集合
+            Map<Character, Set<DFAState>> transitions = new HashMap<>();
+            for(DFAState state : set){
+                for(Map.Entry<Character, DFAState> tran : state.getNextStates().entrySet()){
+                    // 判断转移到的状态属于哪个集合
                     for(Set<DFAState> t : allSet){
-                        if(t.contains(state.getNextState(randomC))){
-                            toState = table.get(t);
+                        if(t.contains(tran.getValue())){
+                            transitions.put(tran.getKey(), t);
+                            break;
                         }
                     }
-                } else {
-                    // 转移到自身
-                    toState = table.get(set);
                 }
-            } else {
-                toState = table.get(set);
             }
 
-
-            // 为所有字符生成转移关系
             DFAState cur = table.get(set);
-            for(char c : charSet){
-                cur.addNextState(c, toState);
+            for(Map.Entry<Character, Set<DFAState>> tran : transitions.entrySet()){
+                cur.addNextState(tran.getKey(), table.get(tran.getValue()));
             }
 
             // 设置是否可接受
@@ -160,6 +156,7 @@ public class DFAMinimizer {
                         if(temp.contains(toState)){
                             // 接受字符转移到了temp集合里的状态
                             toSet = temp;
+                            break;
                         }
                     }
                 } else {
@@ -179,6 +176,9 @@ public class DFAMinimizer {
             if(setTOSet.size() > 1){
                 // 转移到了不同状态
                 allSet.remove(set);
+
+                // 当前集合因为ch被分割成了多个集合
+                // 需要重新处理转移关系
                 allSet.addAll(setTOSet.values());
                 return ;
             }

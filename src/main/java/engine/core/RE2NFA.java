@@ -15,7 +15,11 @@ public class RE2NFA {
     public static NFA toNFA(String re){
         NFA nfa = new NFA();
         try{
-            parse(nfa, re, 0, re.length());
+            NFAState[] states = parse(nfa, re, 0, re.length());
+
+            // 设置起始状态和终止状态
+            nfa.setStartState(states[0]);
+            states[1].setAcceptable();
         } catch (BadREException why){
             System.out.println(why.getMessage());
             nfa = null;

@@ -13,7 +13,7 @@ public class Lexer {
     private DFA dfa;
     private int[][] transitionTable;
 
-    public void setDDFA(DFA dfa){
+    public void setDFA(DFA dfa){
         this.dfa = dfa;
         // dfa发生了改变 使当前的转移表无效
         transitionTable = null;
