@@ -1,6 +1,8 @@
 package engine.core;
 
+import engine.exception.BadREException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -39,38 +41,29 @@ public class TestRE2NFA {
         assertEquals(4, nfa.getStates().size());
     }
 
-    @Test
-    void testParser() throws Exception {
-        NFA nfa = null;
-        String re = null;
+    @ParameterizedTest
+    @ValueSource(strings = {"abc", "a|c", "a*b*",
+                            "a(b|c)*, a(b(c|d)*)*", "acd(cd|fa)*(fff(ef|af))"})
+    void testParser(String re) {
+        NFA nfa = new NFA();
 
-        re = "abc";
-        parse(nfa = new NFA(), re, 0, re.length());
-
-        re = "a|c";
-        parse(nfa = new NFA(), re, 0, re.length());
-
-        re = "a*b";
-        parse(nfa = new NFA(), re, 0, re.length());
-
-        re = "a(b|c)*";
-        parse(nfa = new NFA(), re, 0, re.length());
-
-        System.out.println(nfa);
+        assertDoesNotThrow(new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                parse(nfa, re, 0, re.length());
+            }
+        });
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"a(b|c)*", "f(ee|ie)"})
-    void testAll(String re) throws Exception {
+    @ValueSource(strings = {"|aa", "ab**", "a(bb(c))**", "a(bb", "abc|"} )
+    void testBadRE(String re) {
         NFA nfa = new NFA();
-
-        parse(nfa, re, 0, re.length());
-        nfa.detectAcceptableStates();
-
-        DFA dfa = NFA2DFA.toDFA(nfa);
-        dfa.setStartStateByExistStates();
-        dfa = DFAMinimizer.minimize(dfa);
-
-        System.out.println(dfa);
+        assertThrows(BadREException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                parse(nfa, re, 0, re.length());
+            }
+        });
     }
 }

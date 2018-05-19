@@ -1,6 +1,6 @@
 package engine.core;
 
-
+import engine.exception.BadREException;
 /**
  * @program: regex-engine
  * @description: 由正规文法生成NFA
@@ -16,7 +16,7 @@ public class RE2NFA {
         NFA nfa = new NFA();
         try{
             parse(nfa, re, 0, re.length());
-        } catch (Exception why){
+        } catch (BadREException why){
             System.out.println(why.getMessage());
             nfa = null;
         }
@@ -30,7 +30,7 @@ public class RE2NFA {
      * @param to 终止位置，不包含
      * @Return 解析的部分生成的NFA的起始状态和终止状态构成的数组
      */
-    public static NFAState[] parse(NFA nfa, String re, int from, int to) throws Exception {
+    public static NFAState[] parse(NFA nfa, String re, int from, int to) throws BadREException {
         // 解析RE
 
         // 正规文法共五种情况：
@@ -43,12 +43,18 @@ public class RE2NFA {
         // 对1，2可直接解析
         // 对3， 4， 5递归解析
 
+        if(from >= to){
+            throw new BadREException(String.format("RE: %s, Position: %d, to >= from",
+                    re, from));
+        }
+
         if(1 == to - from){
             // 只有一个字符 这个字符不可能是元符号
-            // 为这个普通字符生成状态并返回
             if(Const.RE_META_SYMBOL.contains(re.charAt(from))){
-                throw new Exception("parse re error");
+                throw new BadREException(String.format("RE: %s, Position: %d, Value: %c",
+                        re, from, re.charAt(from)));
             }
+            // 为这个普通字符生成状态并返回
             NFAState[] states = {nfa.newState(), nfa.newState()};
             states[0].addNextState(re.charAt(from), states[1]);
             return states;
@@ -63,11 +69,13 @@ public class RE2NFA {
                 if(cur == '('){
                     // 继续找 找到匹配的 ）
                     int layer = 0;
+                    boolean match = false;
                     for(int index = i + 1; index < to && index < re.length(); index++){
                         if(re.charAt(index) == '('){
                             layer++;
                         } else if(re.charAt(index) == ')'){
                             if(layer == 0){
+                                match = true;
                                 NFAState[] ret = parse(nfa, re, i + 1, index);
                                 if(index + 1 < to && re.charAt(index + 1) == '*'){
                                     // 闭包
@@ -88,14 +96,26 @@ public class RE2NFA {
                             }
                         }
                     }
+
+                    if(!match){
+                        throw new BadREException(String.format("RE: %s, Position: %d, Value: %c, " +
+                                        "mismatch meta symbol",
+                                re, from, re.charAt(from)));
+                    }
                 } else if(cur == '|'){
                     // 左边的不能为null
-                    assert lastStates != null;
+                    if(lastStates == null){
+                        throw new BadREException(String.format("RE: %s, Position: %d, Value: %c, " +
+                                        "wrong meta symbol",
+                                re, from, re.charAt(from)));
+                    }
                     NFAState[] ret = parse(nfa, re, i + 1, to);
                     lastStates = wrapSelect(nfa, lastStates, ret);
                     i = to;
                 } else {
-                    System.out.println("error");
+                    throw new BadREException(String.format("RE: %s, Position: %d, Value: %c, " +
+                                    "unexpected meta symbol.",
+                            re, from, re.charAt(from)));
                 }
             } else {
                 // 普通字符
