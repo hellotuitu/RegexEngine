@@ -109,13 +109,4 @@ public class NFA2DFA {
         }
 
     }
-
-    public static void main(String[] args) throws Exception {
-        String fileName = ".\\src\\main\\resources\\sample_dfa.xml";
-        NFA nfa = NFA.constructNFAFromXML(fileName);
-
-        DFA dfa = NFA2DFA.toDFA(nfa);
-        System.out.println(dfa);
-    }
-
 }

@@ -38,7 +38,10 @@ public class TestEngine {
 
                 Arguments.of("a(b(cd|ef)|g)", "ag"),
                 Arguments.of("a(b(cd|ef)|g)", "abcd"),
-                Arguments.of("a(b(cd|ef)|g)", "abef")
+                Arguments.of("a(b(cd|ef)|g)", "abef"),
+
+                Arguments.of("(a|b)c", "ac"),
+                Arguments.of("(a|b)c", "bc")
                 );
     }
 }
