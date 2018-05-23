@@ -9,7 +9,7 @@ import java.util.Map;
  * @author: TUITU
  * @create: 2018-05-18 16:20
  **/
-public class Lexer {
+public class MyPattern {
     private DFA dfa;
     private int[][] transitionTable;
 

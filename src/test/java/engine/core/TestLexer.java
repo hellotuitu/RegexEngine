@@ -16,20 +16,20 @@ public class TestLexer {
         DFA dfa = new TestDFAMinimizer().constructDFA("a(b|c)*");
         dfa = DFAMinimizer.minimize(dfa);
 
-        Lexer lexer = new Lexer();
-        lexer.setDFA(dfa);
-        lexer.compile();
+        MyPattern myPattern = new MyPattern();
+        myPattern.setDFA(dfa);
+        myPattern.compile();
 
-        assertEquals(-1, lexer.match("a"));
-        assertEquals(-1, lexer.match("ab"));
-        assertEquals(-1, lexer.match("abc"));
-        assertEquals(-1, lexer.match("ac"));
-        assertEquals(-1, lexer.match("abbbbbbc"));
+        assertEquals(-1, myPattern.match("a"));
+        assertEquals(-1, myPattern.match("ab"));
+        assertEquals(-1, myPattern.match("abc"));
+        assertEquals(-1, myPattern.match("ac"));
+        assertEquals(-1, myPattern.match("abbbbbbc"));
 
-        assertEquals(0, lexer.match("bcccc"));
-        assertEquals(1, lexer.match("adddd"));
-        assertEquals(2, lexer.match("abfff"));
-        assertEquals(3, lexer.match("acbq"));
+        assertEquals(0, myPattern.match("bcccc"));
+        assertEquals(1, myPattern.match("adddd"));
+        assertEquals(2, myPattern.match("abfff"));
+        assertEquals(3, myPattern.match("acbq"));
     }
 
     @Test
@@ -37,15 +37,15 @@ public class TestLexer {
         DFA dfa = new TestDFAMinimizer().constructDFA("f(ee|ie)");
         dfa = DFAMinimizer.minimize(dfa);
 
-        Lexer lexer = new Lexer();
-        lexer.setDFA(dfa);
-        lexer.compile();
+        MyPattern myPattern = new MyPattern();
+        myPattern.setDFA(dfa);
+        myPattern.compile();
 
-        assertEquals(-1, lexer.match("fee"));
-        assertEquals(-1, lexer.match("fie"));
-        assertEquals(0, lexer.match("oie"));
-        assertEquals(1, lexer.match("fde"));
-        assertEquals(2, lexer.match("fef"));
-        assertEquals(2, lexer.match("fe"));
+        assertEquals(-1, myPattern.match("fee"));
+        assertEquals(-1, myPattern.match("fie"));
+        assertEquals(0, myPattern.match("oie"));
+        assertEquals(1, myPattern.match("fde"));
+        assertEquals(2, myPattern.match("fef"));
+        assertEquals(2, myPattern.match("fe"));
     }
 }

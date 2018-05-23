@@ -24,9 +24,9 @@ public class Engine {
         // minimize DFA
         dfa = DFAMinimizer.hopcroft(dfa);
 
-        Lexer lexer = new Lexer();
-        lexer.setDFA(dfa);
-        lexer.compile();
-        return lexer.match(target) == -1;
+        MyPattern myPattern = new MyPattern();
+        myPattern.setDFA(dfa);
+        myPattern.compile();
+        return myPattern.match(target) == -1;
     }
 }
